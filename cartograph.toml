@@ -1,0 +1,29 @@
+# cartograph, mapping itself.
+#
+# Note what is NOT here: a [roles.*] section. Declaring any role REPLACES the
+# roster entirely, so a copy of DEFAULT_ROSTER in this file would drift from the
+# code silently — and a stale policy reads as permissive, because nothing it
+# fails to mention is forbidden. This repo uses the default roster deliberately.
+#
+# See cartograph/config.py EXAMPLE (served at GET /api/project) for the full
+# shape including a custom roster.
+
+[project]
+language = "auto"
+exclude  = ["tests"]
+
+[view]
+resolution  = 0.8
+min_members = 2      # this repo is small; fold less than the default
+
+# Declared and rendered by nothing, on purpose. Flow views wait until the
+# general abstraction settles. Kept here as the shape they will consume.
+[channels.map]
+description  = "source tree -> graph -> browser"
+entry_points = ["cartograph/crawler/ast_index.py"]
+sinks        = ["web/app.js"]
+
+[channels.agent]
+description  = "a question -> headless claude in the worktree -> cited answer"
+entry_points = ["cartograph/server.py"]
+sinks        = ["cartograph/agent/claude.py"]
